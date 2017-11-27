@@ -59,6 +59,33 @@ class Tx_Cfcleaguefe_Twig_Data_MatchNote
         return $this->matchNote->getMinute();
     }
 
+    public function isHome()
+    {
+        $ret = $this->matchNote->isHome();
+        if($this->matchNote->isGoalOwn()) {
+            $ret = !$ret;
+        }
+        return $ret;
+    }
+
+    public function isGuest()
+    {
+        $ret = $this->matchNote->isGuest();
+        if($this->matchNote->isGoalOwn()) {
+            $ret = !$ret;
+        }
+        return $ret;
+    }
+
+    public function getGoalsHome()
+    {
+        return $this->matchNote->getProperty('goals_home');
+    }
+    public function getGoalsGuest()
+    {
+        return $this->matchNote->getProperty('goals_guest');
+    }
+
     public function getType()
     {
         return $this->matchNote->getType();
@@ -67,6 +94,17 @@ class Tx_Cfcleaguefe_Twig_Data_MatchNote
     public function isChange()
     {
         return $this->getType() == tx_cfcleague_models_MatchNote::TYPE_CHANGEOUT;
+    }
+
+    public function isGoal()
+    {
+        $goalTypes = [
+            tx_cfcleague_models_MatchNote::TYPE_GOAL,
+            tx_cfcleague_models_MatchNote::TYPE_GOAL_HEADER,
+            tx_cfcleague_models_MatchNote::TYPE_GOAL_PENALTY,
+            tx_cfcleague_models_MatchNote::TYPE_GOAL_OWN,
+        ];
+        return in_array($this->getType(), $goalTypes);
     }
 
     /**
